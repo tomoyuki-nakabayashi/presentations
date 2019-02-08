@@ -19,11 +19,15 @@ GCがなく、バイナリの動作速度は[C言語に匹敵](https://github.co
 
 ### 最近のRust
 
+プロダクトや様々な分野で使用されるように
+
 - Firefoxの次世代レンダリングエンジンServo
 - AWSのVMM firecracker
 - Rustの安全性を形式手法で証明したRustBelt
 - OS
 - Idein actcast
+
+---
 
 ### 組込み`Rust`
 
