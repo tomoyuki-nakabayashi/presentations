@@ -101,6 +101,8 @@ Rustでコンパイルが通った時点で、MISRA-Cの**80%**のコーディ�
 - 借用
 - ライフタイム
 
+---
+
 ### 強力な型システム
 
 強力な型システムにより、**型安全**である。
@@ -119,7 +121,7 @@ Rustでコンパイルが通った時点で、MISRA-Cの**80%**のコーディ�
 
 ```c
     int32_t value = 42;
-    int32_t *value_alias = &value;
+    int32_t *alias = &value;
 
     value += 1;
     *alias += 1;
@@ -137,15 +139,17 @@ Rustでは**できない**
 ```rust
 fn main() {
     let mut value = 42;
-    let mut value_alias = &mut value;
+    let mut alias = &mut value;
 
-    value += 1;  // compile error!
-    *value_alias += 1;
+    value += 1; // compile error!
+    *alias += 1;
 }
 ```
 
 動的確保したメモリでも、マルチスレッドでも同じ。
 同時に複数箇所から書き換えられることはない。
+
+---
 
 ### 借用
 
@@ -159,6 +163,8 @@ fn main() {
 つまり、誰かが書き換えられる変数は、誰からも**読むことすらできない**。
 
 書き換わらない変数は、複数の場所から読み込まれる。
+
+---
 
 ### ライフタイム
 
