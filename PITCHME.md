@@ -23,7 +23,7 @@
 
 ---
 
-### Go
+### `Go`
 
 - google
 - スクリプト言語の生産性とコンパイル言語の速度
@@ -34,18 +34,18 @@
 
 ---
 
-### Rust
+### `Rust`
 
 - Mozilla
 - 速度、並行性、安全性
 - 言語仕様は簡単ではない
-- GCなし
+- GCなしでメモリ安全性を保証
 - オブジェクト指向、関数型を取り入れた手続き型言語
 - 自前実装のlibc
 
 ---
 
-### Zig
+### `Zig`
 
 - connectFree
 - 堅牢性、最適性、明瞭性
@@ -65,9 +65,7 @@
 - Zig
     - ベアメタル、Cとの連携が多い
 - CおよびC++
-    - 既存ソフトの改修
-
-※私の感想
+    - 既存ソフトの改修、ライブラリ
 
 ---
 
@@ -96,6 +94,7 @@ Mozillaが支援する**システムプログラミング言語**
 - 安全性
 
 GCがなく、バイナリの動作速度は[C言語に匹敵](https://github.com/ixy-languages/ixy-languages)
+
 強力な型システムとリソース管理システムにより、**メモリセーフ**かつ**スレッドセーフ**
 
 ---
@@ -290,6 +289,75 @@ fn main() {
 
 ---
 
+### 少し実践的な例
+
+Zephyrの参照カウンタを使ったメモリ管理機構のアプリ例
+
+```c
+    struct net_pkt *reply_pkt;
+    reply_pkt = net_app_get_net_pkt(ctx, net_pkt_family(pkt), BUF_TIMEOUT);
+
+    ret = net_app_send_pkt(ctx, reply_pkt, NULL, 0, K_NO_WAIT,
+                   UINT_TO_POINTER(net_pkt_get_len(reply_pkt)));
+    if (ret < 0) {
+        NET_ERR("Cannot send data to peer (%d)", ret);
+        net_pkt_unref(reply_pkt);
+    }
+```
+
+---
+
+### 非同期処理のためエラー時のみcallerがメモリ解放
+
+APIドキュメント
+
+> If the function return < 0, then it is caller responsibility to unref the pkt.
+
+```c
+    if (ret < 0) {
+        net_pkt_unref(reply_pkt);
+    }
+```
+
+上の処理がないとメモリリーク、条件を間違うと2重解放
+
+**人間が**、API仕様を把握するしかない
+
+---
+
+### Rustの例（API提供側）
+
+```rust
+// `pkt`の所有権を要求する
+fn consume_or(pkt: Box<u32>) -> Result<(), Box<u32>> {
+    if *pkt == 0 {
+        return Ok(())
+    } // `pkt`のライフタイムが終了し、リソースが解放される
+
+    // エラーの場合は、所有権を返す
+    Err(pkt)
+}
+```
+
+---
+
+### Rustの例
+
+https://wandbox.org/permlink/0Swez4QYqVNxOEMX
+
+```rust
+    let reply_pkt = Box::new(1);
+
+    if let Err(_reply_pkt) = consume_or(reply_pkt) {
+        // エラーハンドリングする
+    } // _reply_pktはここでリソースを解放する
+
+    // 解放したリソースへのアクセスなのでコンパイルエラー
+    // println!("{}", reply_pkt);
+```
+
+---
+
 ### more information
 
 - [Rustの日本語ドキュメント](https://doc.rust-jp.rs/)
@@ -357,3 +425,4 @@ C言語とRustのギャップは、
     - LLVMの知識と近代プログラミング言語の機能が重要に
 - 現状、Rustが有力候補
 - Rustは安全性の高いプログラミングが可能
+    - 型システム、所有権、借用、ライフタイム
