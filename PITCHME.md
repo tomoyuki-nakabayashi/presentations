@@ -154,13 +154,15 @@ C言語でのコーディングは自然石を使った壁の構築、対して�
 
 [Rustで普通にプログラミングするだけでMISRA-Cのルールを90%満足できる](https://blog.hatena.ne.jp/tomo-wait-for-it-yuki/tomo-wait-for-it-yuki.hatenablog.com/edit?entry=98012380858802545)
 
-Rustでコンパイルが通った時点で、MISRA-Cの**80%**のコーディングルールを満たす。
+Rust組込みの機能で、MISRA-Cの**80%**のコーディングルールを満たす。
 
 有料のMISRA-Cチェックツールで検出できないバグが、Rustでコンパイルエラーとなる例
 
 [The Challenge of Using C in Safety-Critical Applications](https://static1.squarespace.com/static/5a60ec649f8dce866f011db6/t/5ad016871ae6cf72ec208cb8/1523586697234/The+Challenge+of+Using+C+in+Safety-Critical+Applications.pdf)
 
-`Rustコンパイラ > C + コーディング基準 + 静的解析ツール`
+Linux脆弱性のうち、50%はRustでは基本的に発生しない
+
+[Why Rust](https://medium.com/paritytech/why-rust-846fd3320d3f)
 
 ---
 
@@ -362,6 +364,8 @@ https://wandbox.org/permlink/0Swez4QYqVNxOEMX
 
 - [Rustの日本語ドキュメント](https://doc.rust-jp.rs/)
 - [The Embedded Rust Book 和訳](https://tomoyuki-nakabayashi.github.io/book/)
+- [The Rust Way of OS Development](https://phil-opp.github.io/talk-konstanz-may-2018/#1) 
+- [Why Rust](https://medium.com/paritytech/why-rust-846fd3320d3f)
 
 ---
 
@@ -378,6 +382,7 @@ C言語のギャップが大きい
 ### 今後の組込みプログラマに求められるもの
 
 組込みでデファクトになる言語は予測できないが、LLVM言語が普及する可能性が高い
+DeepLearningのCPU向けバックエンドが軒並みLLVM
 
 - LLVMの知識
 - 近代的プログラミング言語の機能
