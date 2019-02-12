@@ -364,6 +364,7 @@ https://wandbox.org/permlink/0Swez4QYqVNxOEMX
 
 - [Rustの日本語ドキュメント](https://doc.rust-jp.rs/)
 - [The Embedded Rust Book 和訳](https://tomoyuki-nakabayashi.github.io/book/)
+- [Rust Discovery Book 和訳 WIP](https://tomoyuki-nakabayashi.github.io/discovery/)
 - [The Rust Way of OS Development](https://phil-opp.github.io/talk-konstanz-may-2018/#1) 
 - [Why Rust](https://medium.com/paritytech/why-rust-846fd3320d3f)
 
